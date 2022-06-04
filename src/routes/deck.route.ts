@@ -47,9 +47,10 @@ router.get('/:id/draw', async (req, res, next) => {
   try {
     const deck = await Deck.findOne({ _id: req.params.id }, { _id: 0, cards: 1 })
     if (!deck) throw new ApiError(httpStatus.NOT_FOUND, 'Deck not found')
+    const drawnCards = deck.cards.slice(0, Number(req.query.count || 0))
     deck.cards.splice(0, Number(req.query.count || 0))
     await Deck.updateOne({ _id: req.params.id }, { $set: { cards: deck.cards } })
-    res.json(deck)
+    res.json(drawnCards)
   } catch (e) {
     next(e)
   }
