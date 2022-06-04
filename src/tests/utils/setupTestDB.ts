@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { TEST_DB_URI } from '../../config/config'
 
-const setupTestDB = () => {
+const setupTestDB = (): void => {
   beforeAll(async () => {
     await mongoose.connect(TEST_DB_URI, {
       useNewUrlParser: true,

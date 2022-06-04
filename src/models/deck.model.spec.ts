@@ -1,48 +1,35 @@
 import faker from 'faker'
+import { createNewDeck } from '../utils/cards'
 import { IDeck, Deck } from './deck.model'
+import { DeckType } from '../types'
 
-describe('Store model', () => {
-  let newStore: IDeck
+describe('Deck model', () => {
+  let newDeck: IDeck
   beforeEach(() => {
-    newStore = {
-      name: faker.name.findName(),
-      description: faker.lorem.paragraph(),
-      image: faker.image.animals(100, 100),
+    const deckType = faker.helpers.randomize([DeckType.SHORT, DeckType.FULL])
+    newDeck = {
+      type: deckType,
+      shuffled: faker.datatype.boolean(),
+      cards: createNewDeck(deckType),
     }
   })
 
   it('should correctly validate', async () => {
-    await expect(new Deck(newStore).validate()).resolves.toBeUndefined()
+    await expect(new Deck(newDeck).validate()).resolves.toBeUndefined()
   })
 
-  it('should throw a validation error if name is empty', async () => {
-    delete newStore.name
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
-    newStore.name = ''
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
+  it('should throw a validation error if type is empty', async () => {
+    delete newDeck.type
+    await expect(new Deck(newDeck).validate()).rejects.toThrow()
   })
 
-  it('should throw a validation error if name is less than 3 characters', async () => {
-    newStore.name = 'xx'
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
+  it('should throw a validation error if type is less than 4 characters', async () => {
+    newDeck.type = 'xx'
+    await expect(new Deck(newDeck).validate()).rejects.toThrow()
   })
 
-  it('should throw a validation error if description is empty', async () => {
-    delete newStore.description
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
-    newStore.description = ''
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
-  })
-
-  it('should throw a validation error if description is more than 500 characters', async () => {
-    newStore.description = faker.lorem.word(501)
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
-  })
-
-  it('should throw a validation error if image is empty', async () => {
-    delete newStore.image
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
-    newStore.image = ''
-    await expect(new Deck(newStore).validate()).rejects.toThrow()
+  it('should throw a validation error if shuffled is empty', async () => {
+    delete newDeck.shuffled
+    await expect(new Deck(newDeck).validate()).rejects.toThrow()
   })
 })

@@ -9,8 +9,6 @@ import { IS_TEST, APP_PREFIX_PATH } from '@/config/config'
 import httpStatus from 'http-status'
 import ApiError from './utils/ApiError'
 import { errorConverter, errorHandler } from './middlewares/error'
-import swaggerUi from 'swagger-ui-express'
-import swaggerDocument from './swagger.json'
 
 const app = express()
 
@@ -40,8 +38,6 @@ app.use(cors())
 app.get('/', (_req, res) => {
   res.send('Healthy')
 })
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(APP_PREFIX_PATH, routes)
 

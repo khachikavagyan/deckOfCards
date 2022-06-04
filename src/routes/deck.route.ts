@@ -6,19 +6,7 @@ import { createNewDeck, shuffle } from '../utils/cards'
 
 const router = express.Router()
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const deck = await Deck.findOne({ _id: req.params.id })
-    if (!deck) throw new ApiError(httpStatus.NOT_FOUND, 'Deck not found')
-    res.json({
-      ...deck,
-      remaining: deck.cards.length,
-    })
-  } catch (e) {
-    next(e)
-  }
-})
-
+// create a deck
 router.post('/', async (req, res, next) => {
   try {
     const payload = req.body
@@ -37,13 +25,31 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+// open the deck
+router.get('/:id', async (req, res, next) => {
+  try {
+    const deck = await Deck.findOne({ _id: req.params.id })
+    if (!deck) throw new ApiError(httpStatus.NOT_FOUND, 'Deck not found')
+    res.json({
+      deckId: deck._id,
+      shuffled: deck.shuffled,
+      type: deck.type,
+      cards: deck.cards,
+      remaining: deck.cards.length,
+    })
+  } catch (e) {
+    next(e)
+  }
+})
+
+// draw cards
 router.get('/:id/draw', async (req, res, next) => {
   try {
-    const deck = await Deck.findOne({_id: req.params.id}, {_id: 0, cards: 1})
+    const deck = await Deck.findOne({ _id: req.params.id }, { _id: 0, cards: 1 })
     if (!deck) throw new ApiError(httpStatus.NOT_FOUND, 'Deck not found')
     deck.cards.splice(0, Number(req.query.count || 0))
     await Deck.updateOne({ _id: req.params.id }, { $set: { cards: deck.cards } })
-    res.json()
+    res.json(deck)
   } catch (e) {
     next(e)
   }

@@ -1,10 +1,10 @@
-import { DeckType, ICard } from '@/types'
+import { DeckType, ICard } from '../../types'
 
 export const createNewDeck = (type: DeckType): ICard[] => {
   const suits = ['HEARTS', 'CLUBS', 'SPADES', 'DIAMONDS']
-  let symbols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'JACK', 'QUEEN', 'KING', 'ACE']
+  let symbols = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'JACK', 'QUEEN', 'KING', 'ACE']
   if (type === DeckType.SHORT) {
-    symbols = symbols.slice(6)
+    symbols = symbols.slice(5)
   }
   const deck = []
 

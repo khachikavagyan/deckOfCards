@@ -3,8 +3,8 @@ import { Schema, Document, model } from 'mongoose'
 
 export interface IDeck {
   type: string
-  shuffled: string
-  cards: ICard[]
+  shuffled: boolean
+  cards?: ICard[]
 }
 
 export default interface IDeckModel extends Document, IDeck {}
