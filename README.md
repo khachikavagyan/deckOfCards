@@ -43,7 +43,7 @@ DB_URI=mongodb://localhost:27017/katana
 
 # If you want to use seperate database URI
 DB_HOST=localhost
-DB_NAME=conduit
+DB_NAME=deck
 DB_PORT=27017
 ```
 
